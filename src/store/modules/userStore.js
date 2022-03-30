@@ -5,11 +5,13 @@ const userStore = {
     state: {
         username: "",
         token: "",
+        isLogin: false,
     },
     mutations: {
         login: function(state, payload) {
             state.username = payload.username;
             state.token = payload.token;
+            state.isLogin = true;
         },
         loginCheck: function(state) {
             if (!state.token) {

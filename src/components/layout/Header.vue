@@ -6,8 +6,8 @@
                 <li><router-link to="/subject">과제</router-link></li>
                 <li><router-link to="/professor">교수</router-link></li>
                 <li><router-link to="/student">학생</router-link></li>
-                <li v-if="!isLogin"><router-link to="/login">로그인</router-link></li>
-                <li v-if="!isLogin"><router-link to="/register">회원가입</router-link></li>
+                <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/login">로그인</router-link></li>
+                <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/register">회원가입</router-link></li>
                 <li v-else>로그아웃</li>
             </ul>
         </nav>
@@ -17,11 +17,6 @@
 <script>
 
 export default {
-    data() {
-        return {
-            isLogin: false,
-        }
-    }
 }
 </script>
 
