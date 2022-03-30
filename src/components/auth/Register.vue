@@ -1,10 +1,10 @@
 <template>
     <section>
         <h2>회원가입</h2>
-        <form v-on:submit="submitForm">
+        <form v-on:submit="signupApi">
             <fieldset>
                 <label for="username">아이디 :</label>
-                <input type="text" id="username" v-model="username" v-on:change="validateId" placeholder="아이디를 입력하세요">
+                <input type="text" id="username" v-model="username" placeholder="아이디를 입력하세요">
                 <strong v-show="checkId">중복된 아이디입니다.</strong>
             </fieldset>
             <fieldset>
@@ -23,8 +23,9 @@
 </template>
 
 <script>
-// import { ENDPOINT } from "../../constants/constants.js";
-
+import { ENDPOINT } from "../../constants/constants.js";
+import router from "../../router/router"
+import axios from "axios";
 
 export default {
     data() {
@@ -37,29 +38,26 @@ export default {
         }
     },
     methods: {
-        submitForm(e) {
-            e.preventDefault();
-            console.log(this.username);
-            console.log(this.pwd);
-            console.log(this.pwdConfirm);
-        },
-        validateId(e) {
-            const config = {
-                method: "get",
-                url: ENDPOINT,
-                data: {
-                "username": this.username,
-                "password": this.pwd,
-                "status": true
-                }
-            };
-            console.log(config)
-            axios(config).then((data) => {return console.lo})
-            
-            console.log(data);
-        },
         validatePwd(e) {
-            this.checkPwd = (this.pwd == this.pwdConfirm) ? false : true
+            this.checkPwd = (this.pwd === this.pwdConfirm) ? false : true
+            if (this.checkPwd === true) {
+                this.pwdConfirm = ""
+            }
+        },
+        signupApi(e) {
+            e.preventDefault();
+
+            axios.post(`${ENDPOINT}/users/signup`, {
+                username: this.username,
+                password: this.pwd
+            }).then((res) => {
+                console.log(res.data);
+                alert("회원가입 되었습니다.")
+                router.push("login")
+            }).catch((err) => {
+                console.log(err)
+                alert("회원가입에 실패하셨습니다..")
+            })
         }
     }
 }
