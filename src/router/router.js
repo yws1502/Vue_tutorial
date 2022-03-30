@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../components/auth/Login.vue";
-import Register from "../components/auth/register.vue";
-import Professor from "../components/Professor.vue";
-import Student from "../components/Student.vue";
-import Subject from "../components/Subject.vue";
-import Home from "../components/Home.vue";
+import Login from "../views/Login.vue";
+import Register from "../views/register.vue";
+import Professor from "../views/Professor.vue";
+import Student from "../views/Student.vue";
+import Subject from "../views/Subject.vue";
+import Home from "../views/Home.vue";
 
 
 Vue.use(VueRouter);

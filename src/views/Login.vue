@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import { ENDPOINT, HEADERS } from "../../constants/constants";
-import router from "../../router/router";
+import { ENDPOINT, HEADERS } from "../constants/constants";
+import router from "../router/router";
 import axios from "axios";
 
 export default {

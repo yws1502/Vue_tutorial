@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { ENDPOINT } from "../../constants/constants.js";
-import router from "../../router/router"
+import { ENDPOINT } from "../constants/constants.js";
+import router from "../router/router"
 import axios from "axios";
 
 export default {
