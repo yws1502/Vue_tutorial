@@ -3,7 +3,6 @@ import router from "../../router/router";
 
 const userStore = {
     state: {
-        userId: "",
         username: "",
         token: "",
     },
