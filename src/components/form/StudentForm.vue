@@ -15,15 +15,9 @@
                 <input type="text" v-model="studentAddress" id="studentAddress">
             </fieldset>
             <fieldset>
-                <label for="subjectName">전공 : </label>
-                <select name="subject" id="subjectName" v-model="subjectName">
-                    <option v-for="(subject, idx) in subjects" :key="idx" :value="subject">{{subject}}</option>
-                </select>
-            </fieldset>
-            <fieldset>
-                <label for="professorName">담당 교수 : </label>
-                <select name="professor" id="professorName" v-model="professorName">
-                    <option v-for="(professor, idx) in professors" :key="idx" :value="professor">{{professor}}</option>
+                <label for="subjectInfo">전공 / 교수 : </label>
+                <select name="subject" id="subjectInfo" v-model="subjectInfo">
+                    <option v-for="(info, idx) in subjectInfoList" :key="idx" :value="info">{{info[0]}} / {{info[1]}}</option>
                 </select>
             </fieldset>
             <button type="submit">등록 하기</button>
@@ -42,26 +36,19 @@ export default {
             studentName: "",
             studentAge: "",
             studentAddress: "",
-            subjectName: "",
-            professorName: "",
-            subjects: [],
-            professors: [],
+            subjectInfo: "",
+            subjectInfoList: [],
         }
     },
     created() {
         axios.get(`${ENDPOINT}/subjects`)
         .then((res) => {
             res.data.forEach((subject) => {
-                this.subjects.push(subject.subjectName);
-            })
-        })
-        .catch((err) => console.log(err))
-
-        axios.get(`${ENDPOINT}/professors`)
-        .then((res) => {
-            res.data.forEach((professor) => {
-                this.professors.push(professor.professorName)
-            })
+                subject.professors.forEach((professor) => {
+                    const temp = [subject.subjectName, professor.professorName];
+                    this.subjectInfoList.push(temp);
+                });
+            });
         })
         .catch((err) => console.log(err))
     },
@@ -71,14 +58,13 @@ export default {
                 studentName: this.studentName.trim(),
                 studentAge: parseInt(this.studentAge.trim()),
                 studentAddress: this.studentAddress.trim(),
-                subjectName: this.subjectName.trim(),
-                professorName: this.professorName.trim(),
+                subjectName: this.subjectInfo[0].trim(),
+                professorName: this.subjectInfo[1].trim(),
             }
-            console.log(data)
-            axios.post(`${ENDPOINT}/students`, JSON.stringify(data), HEADERS)
+            axios.post(`${ENDPOINT}/students`, data, HEADERS)
             .then((res) => {
-                this.$store.commit("setIsShow")
-                console.log(res.data)
+                this.$store.commit("setIsShow");
+                alert("학생이 추가되었습니다.")
             })
             .catch((err) => console.log(err))
         },

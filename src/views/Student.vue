@@ -8,7 +8,8 @@
                         <th>이름</th>
                         <th>나이</th>
                         <th>주소</th>
-                        <th>등록일</th>
+                        <th>전공</th>
+                        <th>담임 교수</th>
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -18,7 +19,8 @@
                         <td>{{student.studentName}}</td>
                         <td>{{student.studentAge}}</td>
                         <td>{{student.studentAddress}}</td>
-                        <td>{{student.createdAt}}</td>
+                        <td>{{student.subjectName}}</td>
+                        <td>{{student.professorName}}</td>
                         <td><button type="button">수정 버튼</button></td>
                         <td><input type="checkbox"></td>
                     </tr>
@@ -44,10 +46,9 @@ export default {
         }
     },
     created() {
-        axios.get(`${ENDPOINT}/students`)
+        axios.get(`${ENDPOINT}/students/1`)
         .then((res) => {
-            res.data.forEach(el => el.createdAt = el.createdAt.split("T")[0])
-            this.students = res.data;
+            this.students = res.data.data;
         }).catch((err) => console.log(err));
     },
     methods: {
