@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" @click="modalControl">
         <h2>학생 명단</h2>
         <form>
             <table>
@@ -27,6 +27,7 @@
             <button type="button">등록하기</button>
             <button type="submit">삭제하기</button>
         </form>
+        <Modal></Modal>
     </div>
 </template>
 
@@ -34,6 +35,7 @@
 import { ENDPOINT } from "../constants/constants";
 import axios from "axios";
 
+import Modal from "../components/Modal.vue";
 
 export default {
     data() {
@@ -47,6 +49,19 @@ export default {
             res.data.forEach(el => el.createdAt = el.createdAt.split("T")[0])
             this.students = res.data;
         }).catch((err) => console.log(err));
+    },
+    methods: {
+        modalControl(e) {
+            const currentNode = e.target;
+            if (currentNode.textContent === "등록하기") {
+                this.$store.commit("setIsShow")
+            } else if (currentNode.className === "mask") {
+                this.$store.commit("setIsShow")
+            }
+        }
+    },
+    components: {
+        "Modal": Modal
     }
 }
 </script>
