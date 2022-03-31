@@ -1,5 +1,5 @@
 <template>
-    <div class="container" @click="modalControl">
+    <div class="container">
         <h2>학생 명단</h2>
         <form>
             <table>
@@ -26,10 +26,10 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button">등록하기</button>
+            <button type="button" @click="showModal">등록하기</button>
             <button type="submit">삭제하기</button>
         </form>
-        <Modal></Modal>
+        <Modal :mode="'student'"></Modal>
     </div>
 </template>
 
@@ -52,14 +52,9 @@ export default {
         }).catch((err) => console.log(err));
     },
     methods: {
-        modalControl(e) {
-            const currentNode = e.target;
-            if (currentNode.textContent === "등록하기") {
-                this.$store.commit("setIsShow")
-            } else if (currentNode.className === "mask") {
-                this.$store.commit("setIsShow")
-            }
-        }
+        showModal() {
+            this.$store.commit("setIsShow")
+        },
     },
     components: {
         "Modal": Modal

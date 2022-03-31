@@ -1,17 +1,26 @@
 <template>
-    <div class="mask" v-show="this.$store.state.modalStore.isShow">
-        <StudentForm></StudentForm>
+    <div class="mask" @click="closeModal" v-show="this.$store.state.modalStore.isShow">
+        <StudentForm v-if="mode === 'student'"></StudentForm>
+        <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
     </div>
 </template>
 
 <script>
 import StudentForm from "./form/StudentForm.vue";
+import SubjectForm from "./form/SubjectForm.vue";
 
 
 export default {
+    methods: {
+        closeModal() {
+            this.$store.commit("setIsShow");
+        }
+    },
     components: {
         "StudentForm": StudentForm,
-    }
+        "SubjectForm": SubjectForm
+    },
+    props: ["mode"]
 }
 
 </script>

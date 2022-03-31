@@ -4,7 +4,7 @@ const modalStore = {
     },
     mutations: {
         setIsShow: function(state) {
-            state.isShow = state.isShow === true ? false : true;
+            state.isShow = !state.isShow 
         }
     }
 }
