@@ -1,5 +1,5 @@
 <template>
-    <div class="mask" @click="closeModal" v-show="this.$store.state.modalStore.isShow">
+    <div class="mask" @click.self="closeModal" v-show="this.$store.state.modalStore.isShow">
         <StudentForm v-if="mode === 'student'"></StudentForm>
         <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
     </div>
@@ -12,7 +12,7 @@ import SubjectForm from "./form/SubjectForm.vue";
 
 export default {
     methods: {
-        closeModal() {
+        closeModal(e) {
             this.$store.commit("setIsShow");
         }
     },
