@@ -19,7 +19,7 @@ export default new VueRouter({
             component: Home
         },
         {
-            path: "/subject",
+            path: "/subject/:id",
             name: "subject",
             component: Subject
         },
@@ -43,5 +43,10 @@ export default new VueRouter({
             name: "register",
             component: Register
         },
+        {
+            path: "*",
+            name: "notFound",
+            component: {template: `<div>page not found</div>`}
+        }
     ],
 });

@@ -13,8 +13,8 @@ const subjectStore = {
         }
     },
     actions: {
-        fetchSubject(context) {
-            axios.get(`${ENDPOINT}/subjects/1`)
+        fetchSubject(context, routeId) {
+            axios.get(`${ENDPOINT}/subjects/${routeId}`)
             .then(res => {
                 context.commit("setSubjects", res.data.data)
             })

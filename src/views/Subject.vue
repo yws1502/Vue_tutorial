@@ -41,7 +41,7 @@ export default {
         }
     },
     created() {
-        this.$store.dispatch("subjectStore/fetchSubject");
+        this.$store.dispatch("subjectStore/fetchSubject", this.$route.params.id);
     },
     methods: {
         getProfessorOfSubject(subject) {
@@ -52,7 +52,7 @@ export default {
         },
         deleteSubject() {
             this.$store.dispatch("subjectStore/deleteSubject", this.deleteList);
-            
+
             this.deleteList = [];
         }
     },

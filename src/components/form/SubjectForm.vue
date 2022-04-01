@@ -36,7 +36,7 @@ export default {
             .then((res) => {
                 alert("전공이 등록되었습니다.");
                 this.$store.commit("setIsShow");
-                this.$store.dispatch("subjectStore/subjectFetcher");
+                this.$router.go();
                 this.subjectName = "";
             })
             .catch((err) => console.log(err));
