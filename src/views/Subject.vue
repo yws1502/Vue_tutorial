@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h2>전공 목록</h2>
-        <form>
+        <form @submit.prevent="deleteSubject">
             <table>
                 <thead>
                     <tr>
@@ -18,12 +18,12 @@
                             {{getProfessorOfSubject(subject)}}
                         </td>
                         <td><button type="button">수정 버튼</button></td>
-                        <td><input type="checkbox" :value="subject.id"></td>
+                        <td><input type="checkbox" v-model="deleteList" :value="subject.id"></td>
                     </tr>
                 </tbody>
             </table>
             <button type="button" @click="showModal">등록하기</button>
-            <button>삭제하기</button>
+            <button type="submit">삭제하기</button>
         </form>
         <Modal :mode="'subject'"></Modal>
     </div>
@@ -35,8 +35,13 @@ import Modal from "../components/Modal.vue";
 
 
 export default {
+    data() {
+        return {
+            deleteList: [],
+        }
+    },
     created() {
-        this.$store.dispatch("subjectStore/subjectFetcher");
+        this.$store.dispatch("subjectStore/fetchSubject");
     },
     methods: {
         getProfessorOfSubject(subject) {
@@ -45,6 +50,11 @@ export default {
         showModal() {
             this.$store.commit("setIsShow")
         },
+        deleteSubject() {
+            this.$store.dispatch("subjectStore/deleteSubject", this.deleteList);
+            
+            this.deleteList = [];
+        }
     },
     computed: {
         ...mapState("subjectStore", ["subjects"]),
