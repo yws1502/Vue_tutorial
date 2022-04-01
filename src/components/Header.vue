@@ -8,15 +8,19 @@
                 <li><router-link to="/student">학생</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/login">로그인</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/register">회원가입</router-link></li>
-                <li v-else>로그아웃</li>
+                <li v-else><button @click="logOut" type="button">로그아웃</button></li>
             </ul>
         </nav>
     </div>
 </template>
 
 <script>
-
 export default {
+    methods: {
+        logOut() {
+            this.$store.commit("logOut");
+        }
+    }
 }
 </script>
 
@@ -35,7 +39,18 @@ export default {
         display: flex;
         gap: 10px;
     }
+    nav ul button:hover,
     nav ul a:hover {
         color: pink;
+    }
+    nav ul a {
+        vertical-align: middle;
+    }
+    nav ul button {
+        font-size: 16px;
+        background-color: white;
+        border: none;
+        text-align: unset;
+        cursor: pointer;
     }
 </style>

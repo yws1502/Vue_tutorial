@@ -19,6 +19,10 @@ const userStore = {
                     name: "login"
                 }).catch(err => console.log(err))
             }
+        },
+        logOut: function(state) {
+            state.isLogin = false;
+            localStorage.clear();
         }
     }
 }
