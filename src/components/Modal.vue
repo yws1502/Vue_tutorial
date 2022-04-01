@@ -2,13 +2,14 @@
     <div class="mask" @click.self="closeModal" v-show="this.$store.state.modalStore.isShow">
         <StudentForm v-if="mode === 'student'"></StudentForm>
         <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
+        <ProfessorForm v-else-if="mode === 'Professor'"></ProfessorForm>
     </div>
 </template>
 
 <script>
 import StudentForm from "./form/StudentForm.vue";
 import SubjectForm from "./form/SubjectForm.vue";
-
+import ProfessorForm from "./form/ProfessorForm.vue";
 
 export default {
     methods: {
@@ -18,7 +19,8 @@ export default {
     },
     components: {
         "StudentForm": StudentForm,
-        "SubjectForm": SubjectForm
+        "SubjectForm": SubjectForm,
+        "ProfessorForm": ProfessorForm
     },
     props: ["mode"]
 }
