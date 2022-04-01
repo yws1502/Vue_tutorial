@@ -30,23 +30,13 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { ENDPOINT } from '../constants/constants';
+import { mapState } from "vuex";
 import Modal from "../components/Modal.vue";
 
 
 export default {
-    data() {
-        return {
-            subjects: []
-        }
-    },
     created() {
-        axios.get(`${ENDPOINT}/subjects/1`)
-        .then((res) => {
-            this.subjects = res.data.data;
-        })
-        .catch((err) => console.log(err))
+        this.$store.dispatch("subjectStore/subjectFetcher");
     },
     methods: {
         getProfessorOfSubject(subject) {
@@ -55,6 +45,9 @@ export default {
         showModal() {
             this.$store.commit("setIsShow")
         },
+    },
+    computed: {
+        ...mapState("subjectStore", ["subjects"]),
     },
     components: {
         "Modal": Modal

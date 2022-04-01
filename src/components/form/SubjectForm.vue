@@ -34,11 +34,12 @@ export default {
             };
             axios.post(`${ENDPOINT}/subjects`, data)
             .then((res) => {
-                console.log(res);
-                alert("전공이 등록되었습니다.")
+                alert("전공이 등록되었습니다.");
                 this.$store.commit("setIsShow");
+                this.$store.dispatch("subjectStore/subjectFetcher");
+                this.subjectName = "";
             })
-            .catch((err) => console.log(err))
+            .catch((err) => console.log(err));
         }
     }
 }
