@@ -1,6 +1,5 @@
-import { ENDPOINT } from "../../constants/constants";
+import { subjectAPI } from "../../api";
 import router from "../../router/router";
-import axios from "axios";
 
 const subjectStore = {
     namespaced: true,
@@ -21,18 +20,16 @@ const subjectStore = {
     },
     actions: {
         fetchSubject(context, routeId) {
-            axios.get(`${ENDPOINT}/subjects/${routeId}`)
-            .then(res => {
-                context.commit("setSubjects", res.data.data)
-            })
-            .catch(err => console.log(err))
+            subjectAPI.fetchList(routeId)
+                .then(data => {
+                    context.commit("setSubjects", data.data)
+                })
         },
-        deleteSubject(context, subjects) {
+        deleteSubject(_, subjects) {
             if (confirm("삭제하시겠습니까?")) {
-                axios.delete(`${ENDPOINT}/subjects`, {
-                    data: { subjects }
-                }).then(res => router.go())
-                .catch(err => console.log(err))
+                console.log("in the subjectStore \n", subjects)
+                subjectAPI.delete(subjects)
+                    .then(() => router.go())
             }
         },
     },

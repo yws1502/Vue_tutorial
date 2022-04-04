@@ -13,8 +13,7 @@
 
 
 <script>
-import axios from 'axios';
-import { ENDPOINT } from '../../constants/constants';
+import { subjectAPI } from "../../api";
 import { mapState } from "vuex";
 
 export default {
@@ -31,20 +30,16 @@ export default {
     },
     methods: {
         registerSubjectApi() {
-            if (!this.subjectName) {
-                return alert("전공을 입력해주세요");
-            }
-            const data = {
-                "subjectName": this.subjectName
-            };
-            axios.post(`${ENDPOINT}/subjects`, data)
-            .then((res) => {
-                alert("전공이 등록되었습니다.");
-                this.$store.commit("setIsShow");
-                this.$router.go();
-                this.subjectName = "";
-            })
-            .catch((err) => console.log(err));
+            if (!this.subjectName) return alert("전공을 입력해주세요");
+
+            const data = { "subjectName": this.subjectName };
+            subjectAPI.create(data)
+                .then(() => {
+                    alert("전공이 등록되었습니다.");
+                    this.$store.commit("setIsShow");
+                    this.$router.go();
+                    this.subjectName = "";
+                });
         },
         updateSubjectApi() {
             if (!this.subjectName) {
@@ -53,14 +48,13 @@ export default {
             const data = {
                 "subjectName": this.subjectName
             };
-            axios.put(`${ENDPOINT}/subjects/${this.selectedSubject.id}`, data)
-                .then(res => {
+            subjectAPI.update(this.selectedSubject.id, data)
+                .then(() => {
                     alert("전공이 수정되었습니다.");
                     this.$store.commit("setIsShow");
                     this.$router.go();
                     this.$store.commit("subjectStore/clearSelectedSubject");
-                })
-                .catch(err => console.log(err))
+                });
         },
         setSubjectName() {
             this.subjectName = this.selectedSubject.subjectName;
