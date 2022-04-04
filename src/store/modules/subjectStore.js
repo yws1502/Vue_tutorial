@@ -5,11 +5,18 @@ import axios from "axios";
 const subjectStore = {
     namespaced: true,
     state: {
-        subjects: []
+        subjects: [],
+        selectedSubject: "",
     },
     mutations: {
         setSubjects(state, subjects) {
             state.subjects = subjects
+        },
+        setSelectedSubject(state, selectedSubject) {
+            state.selectedSubject = selectedSubject
+        },
+        clearSelectedSubject(state) {
+            state.selectedSubject = "";
         }
     },
     actions: {
@@ -27,7 +34,7 @@ const subjectStore = {
                 }).then(res => router.go())
                 .catch(err => console.log(err))
             }
-        }
+        },
     },
 }
 

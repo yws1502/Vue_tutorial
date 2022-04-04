@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <strong>전공 등록</strong>
-        <form @submit.prevent="registerSubjectApi">
+        <form @submit.prevent="submitType">
             <fieldset>
                 <label for="subjectId">전공 : </label>
                 <input type="text" id="subjectId" v-model="subjectName">
@@ -13,9 +13,9 @@
 
 
 <script>
-import axios from 'axios'
-import { ENDPOINT } from '../../constants/constants'
-
+import axios from 'axios';
+import { ENDPOINT } from '../../constants/constants';
+import { mapState } from "vuex";
 
 export default {
     data() {
@@ -23,11 +23,16 @@ export default {
             subjectName: "",
         }
     },
+    watch: {
+        "this.selectedSubject": {
+            handler: "setSubjectName",
+            immediate: true
+        }
+    },
     methods: {
         registerSubjectApi() {
-            if (this.subjectName === "") {
-                alert("전공을 입력해주세요");
-                return
+            if (!this.subjectName) {
+                return alert("전공을 입력해주세요");
             }
             const data = {
                 "subjectName": this.subjectName
@@ -40,8 +45,33 @@ export default {
                 this.subjectName = "";
             })
             .catch((err) => console.log(err));
+        },
+        updateSubjectApi() {
+            if (!this.subjectName) {
+                return alert("전공을 입력해주세요");
+            }
+            const data = {
+                "subjectName": this.subjectName
+            };
+            axios.put(`${ENDPOINT}/subjects/${this.selectedSubject.id}`, data)
+                .then(res => {
+                    alert("전공이 수정되었습니다.");
+                    this.$store.commit("setIsShow");
+                    this.$router.go();
+                    this.$store.commit("subjectStore/clearSelectedSubject");
+                })
+                .catch(err => console.log(err))
+        },
+        setSubjectName() {
+            this.subjectName = this.selectedSubject.subjectName;
         }
-    }
+    },
+    computed: {
+        ...mapState("subjectStore", ["selectedSubject"]),
+        submitType() {
+            return !this.selectedSubject ? this.registerSubjectApi : this.updateSubjectApi
+        }
+    },
 }
 </script>
 

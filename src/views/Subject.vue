@@ -17,7 +17,7 @@
                         <td>
                             {{getProfessorOfSubject(subject)}}
                         </td>
-                        <td><button type="button">수정 버튼</button></td>
+                        <td><button type="button" @click="updateSubject(subject)">수정 버튼</button></td>
                         <td><input type="checkbox" v-model="deleteList" :value="subject.id"></td>
                     </tr>
                 </tbody>
@@ -52,8 +52,11 @@ export default {
         },
         deleteSubject() {
             this.$store.dispatch("subjectStore/deleteSubject", this.deleteList);
-
             this.deleteList = [];
+        },
+        updateSubject(selectedSubject) {
+            this.$store.commit("setIsShow")
+            this.$store.commit("subjectStore/setSelectedSubject", selectedSubject);
         }
     },
     computed: {

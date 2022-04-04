@@ -1,5 +1,5 @@
 <template>
-    <div class="mask" @click.self="closeModal" v-show="this.$store.state.modalStore.isShow">
+    <div class="mask" @click.self="closeModal" v-if="this.$store.state.modalStore.isShow">
         <StudentForm v-if="mode === 'student'"></StudentForm>
         <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
         <ProfessorForm v-else-if="mode === 'Professor'"></ProfessorForm>
@@ -15,6 +15,7 @@ export default {
     methods: {
         closeModal(e) {
             this.$store.commit("setIsShow");
+            this.$store.commit("subjectStore/clearSelectedSubject");
         }
     },
     components: {
