@@ -16,6 +16,7 @@ export default {
         closeModal(e) {
             this.$store.commit("setIsShow");
             this.$store.commit("subjectStore/clearSelectedSubject");
+            this.$store.commit("professorStore/clearSelectedProfessor");
         }
     },
     components: {

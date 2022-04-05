@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <strong>교수 등록</strong>
-        <form @submit.prevent="registerProfessorApi">
+        <form @submit.prevent="submitType">
             <fieldset>
                 <label for="professorName">이름</label>
                 <input type="text" id="professorName" v-model="professorName">
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { professorAPI, subjectAPI } from "../../api";
 
 
@@ -32,21 +33,37 @@ export default {
             professorAge: "",
             subjectName: "",
             subjectList: [],
+            isUpdate: false
         }
     },
     created() {
         subjectAPI.getAll()
-            .then(data => {
-                data.forEach((subjectInfo) => {
-                    this.subjectList.push(subjectInfo.subjectName);
-                })
+        .then(data => {
+            data.forEach((subjectInfo) => {
+                this.subjectList.push(subjectInfo.subjectName);
             })
+        });
+    },
+    watch: {
+        "this.selectedProfessor": {
+            handler: "setProfessorInfo",
+            immediate: true,
+        }
     },
     methods: {
         getPage() {
             this.$store.dispatch("professorStore/getProfessors", this.$route.params.id)
         },
-        registerProfessorApi() {
+        closeModal() {
+            this.$store.commit("setIsShow");
+        },
+        setProfessorInfo() {
+            const { professorName, professorAge, subjectName } = this.selectedProfessor;
+            this.professorName = professorName;
+            this.professorAge = professorAge;
+            this.subjectName = subjectName;
+        },
+        createProfessorApi() {
             const data = {
                 professorName: this.professorName,
                 professorAge: parseInt(this.professorAge),
@@ -59,6 +76,25 @@ export default {
                     this.$store.commit("setIsShow");
                 })
         },
+        updateProfessorApi() {
+            const data = {
+                professorName: this.professorName,
+                professorAge: parseInt(this.professorAge),
+                subjectName: this.subjectName
+            };
+            professorAPI.update(data, this.selectedProfessor.id)
+            .then(() => {
+                this.$store.commit("professorStore/clearSelectedProfessor");
+                this.getPage();
+                this.closeModal();
+            })
+        }
+    },
+    computed: {
+        ...mapState("professorStore", ["selectedProfessor"]),
+        submitType() {
+            return this.selectedProfessor.id ? this.updateProfessorApi : this.createProfessorApi
+        }
     }
 }
 </script>

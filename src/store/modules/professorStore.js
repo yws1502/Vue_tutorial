@@ -3,11 +3,18 @@ import { professorAPI } from "../../api";
 const professorStore = {
     namespaced: true,
     state: {
-        professors: []
+        professors: [],
+        selectedProfessor: {},
     },
     mutations: {
         setProfessors(state, professors) {
             state.professors = professors
+        },
+        setSelectedProfessor(state, selectedProfessorObj) {
+            state.selectedProfessor = selectedProfessorObj
+        },
+        clearSelectedProfessor(state) {
+            state.selectedProfessor = {};
         }
     },
     actions: {

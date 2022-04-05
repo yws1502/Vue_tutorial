@@ -45,6 +45,9 @@ export const professorAPI = {
     create: function(data) {
         return request("post", "/professors", data)
     },
+    update: function(data, professorId) {
+        return request("put", `/professors/${professorId}`, data)
+    },
     delete: function(professors) {
         return request("delete", "/professors", {professors})
     }

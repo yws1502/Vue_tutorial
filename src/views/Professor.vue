@@ -17,7 +17,7 @@
                         <td>{{professor.professorName}}</td>
                         <td>{{professor.professorAge}}</td>
                         <td>{{professor.subjectName}}</td>
-                        <td><button type="button">수정</button></td>
+                        <td><button type="button" @click="showUpdateModal(professor)">수정</button></td>
                         <td><input type="checkbox" v-model="deleteProfessorList" :value="professor.id"></td>
                     </tr>
                 </tbody>
@@ -61,6 +61,10 @@ export default {
                 })
             }
         },
+        showUpdateModal(professorObj) {
+            this.showModal();
+            this.$store.commit("professorStore/setSelectedProfessor", professorObj);
+        }
     },
     components: {
         Modal,
