@@ -29,7 +29,7 @@ export default new VueRouter({
             component: Professor
         },
         {
-            path: "/student",
+            path: "/student/:id",
             name: "student",
             component: Student
         },
