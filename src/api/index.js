@@ -52,3 +52,9 @@ export const professorAPI = {
         return request("delete", "/professors", {professors})
     }
 }
+
+export const studentAPI = {
+    getStudents: function(routeId) {
+        return request("get", `/students/${routeId}`)
+    },
+}

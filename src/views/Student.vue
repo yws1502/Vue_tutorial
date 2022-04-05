@@ -34,30 +34,26 @@
 </template>
 
 <script>
-import { ENDPOINT } from "../constants/constants";
-import axios from "axios";
-
+import { mapState } from "vuex";
 import Modal from "../components/Modal.vue";
 
 export default {
-    data() {
-        return {
-            students: [],
-        }
-    },
     created() {
-        axios.get(`${ENDPOINT}/students/1`)
-        .then((res) => {
-            this.students = res.data.data;
-        }).catch((err) => console.log(err));
+        this.getPage();
     },
     methods: {
         showModal() {
-            this.$store.commit("setIsShow")
+            this.$store.commit("setIsShow");
         },
+        getPage() {
+            this.$store.dispatch("studentStore/getStudentPage", this.$route.params.id);
+        }
     },
     components: {
         "Modal": Modal
+    },
+    computed: {
+        ...mapState("studentStore", ["students"])
     }
 }
 </script>
