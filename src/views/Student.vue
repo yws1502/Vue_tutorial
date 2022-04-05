@@ -21,7 +21,7 @@
                         <td>{{student.studentAddress}}</td>
                         <td>{{student.subjectName}}</td>
                         <td>{{student.professorName}}</td>
-                        <td><button type="button">수정 버튼</button></td>
+                        <td><button type="button" @click="updateModal(student)">수정 버튼</button></td>
                         <td><input type="checkbox" v-model="deleteList" :value="student.id"></td>
                     </tr>
                 </tbody>
@@ -64,6 +64,10 @@ export default {
                     this.deleteList = [];
                 });
             }
+        },
+        updateModal(selectedStudent) {
+            this.showModal();
+            this.$store.commit("studentStore/setSelectedStudent", selectedStudent)
         }
     },
     components: {

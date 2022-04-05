@@ -17,6 +17,7 @@ export default {
             this.$store.commit("setIsShow");
             this.$store.commit("subjectStore/clearSelectedSubject");
             this.$store.commit("professorStore/clearSelectedProfessor");
+            this.$store.commit("studentStore/clearSelectedStudent");
         }
     },
     components: {

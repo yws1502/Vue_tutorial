@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <strong>학생 등록</strong>
-        <form @submit.prevent="createStudentApi">
+        <form @submit.prevent="submitType">
             <fieldset>
                 <label for="studentName">이름 : </label>
                 <input type="text" v-model.trim="studentName" id="studentName">
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { subjectAPI, studentAPI } from '../../api';
 
 
@@ -50,6 +51,12 @@ export default {
             });
         })
     },
+    watch: {
+        "this.selectedStudent": {
+            handler: "setStudentInfo",
+            immediate: true
+        }
+    },
     methods: {
         closeModal() {
             this.$store.commit("setIsShow");
@@ -71,6 +78,36 @@ export default {
                 this.getPage();
             })
         },
+        updateStudentApi() {
+            const data = {
+                studentName: this.studentName,
+                studentAge: parseInt(this.studentAge),
+                studentAddress: this.studentAddress,
+                subjectName: this.subjectInfo[0],
+                professorName: this.subjectInfo[1],
+            }
+            studentAPI.update(data, this.selectedStudent.id)
+            .then((data) => {
+                console.log("수정됨", data)
+                this.getPage();
+                this.$store.commit("studentStore/clearSelectedStudent");
+                this.closeModal();
+            })
+        },
+        setStudentInfo() {
+            const { professorName, studentAddress, 
+                studentAge, studentName, subjectName } = this.selectedStudent;
+            this.studentName = studentName;
+            this.studentAge = studentAge;
+            this.studentAddress = studentAddress;
+            this.subjectInfo = [subjectName, professorName];
+        }
+    },
+    computed: {
+        ...mapState("studentStore", ["selectedStudent"]),
+        submitType() {
+            return this.selectedStudent.id ? this.updateStudentApi : this.createStudentApi;
+        }
     }
 }
 </script>

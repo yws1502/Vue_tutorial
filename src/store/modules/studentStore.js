@@ -5,10 +5,17 @@ const studentStore = {
     namespaced: true,
     state: {
         students: [],
+        selectedStudent: {},
     },
     mutations: {
         setStudents(state, students) {
             state.students = students;
+        },
+        setSelectedStudent(state, selectedStudent) {
+            state.selectedStudent = selectedStudent
+        },
+        clearSelectedStudent(state) {
+            state.selectedStudent = {};
         }
     },
     actions: {
