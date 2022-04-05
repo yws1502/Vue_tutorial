@@ -43,6 +43,9 @@ export default {
             })
     },
     methods: {
+        getPage() {
+            this.$store.dispatch("professorStore/getProfessors", this.$route.params.id)
+        },
         registerProfessorApi() {
             const data = {
                 professorName: this.professorName,
@@ -52,10 +55,10 @@ export default {
             professorAPI.create(data)
                 .then(() => {
                     alert("교수 등록이 완료되었습니다.");
-                    this.$store.dispatch("professorStore/fetchProfessors", this.$route.params.id)
+                    this.getPage();
                     this.$store.commit("setIsShow");
                 })
-        }
+        },
     }
 }
 </script>

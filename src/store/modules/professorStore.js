@@ -1,4 +1,3 @@
-import router from "../../router/router";
 import { professorAPI } from "../../api";
 
 const professorStore = {
@@ -12,18 +11,13 @@ const professorStore = {
         }
     },
     actions: {
-        fetchProfessors(context, routeId) {
+        getProfessors(context, routeId) {
             professorAPI.getProfessors(routeId)
                 .then(data => {
                     context.commit("setProfessors", data.data)
                 })
         },
     },
-    getters: {
-        getProfessors: function(state) {
-            return state.professors
-        }
-    }
 }
 
 export default professorStore;

@@ -46,6 +46,6 @@ export const professorAPI = {
         return request("post", "/professors", data)
     },
     delete: function(professors) {
-        return request("delete", "/professors", professors)
+        return request("delete", "/professors", {professors})
     }
 }

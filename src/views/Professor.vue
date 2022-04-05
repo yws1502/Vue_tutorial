@@ -30,34 +30,43 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Modal from "../components/Modal.vue"
+import { mapState } from "vuex";
+import { professorAPI } from "../api";
+import Modal from "../components/Modal.vue";
 
 export default {
     data() {
         return {
             deleteProfessorList: [],
-            professors: [],
         }   
     },
     created() {
-        this.$store.dispatch("professorStore/fetchProfessors", this.$route.params.id)
-    },
-    watch: {
-        getProfessors(value) {
-            this.professors = value
-        },
+        this.getPage()
     },
     methods: {
         showModal() {
             this.$store.commit("setIsShow")
+        },
+        getPage() {
+            this.$store.dispatch("professorStore/getProfessors", this.$route.params.id)
+        },
+        deleteProfessor() {
+            if (this.deleteProfessorList.length === 0) return alert("삭제할 명단을 체크해주세요.");
+
+            if (confirm("삭제하시겠습니까?")) {
+                professorAPI.delete(this.deleteProfessorList)
+                .then(() => {
+                    this.getPage();
+                    this.deleteProfessorList = [];
+                })
+            }
         },
     },
     components: {
         Modal,
     },
     computed: {
-        ...mapGetters("professorStore", ["getProfessors"])
+        ...mapState("professorStore", ["professors"])
     }
 }
 </script>
