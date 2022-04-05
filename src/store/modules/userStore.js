@@ -2,6 +2,7 @@ import router from "../../router/router";
 
 
 const userStore = {
+    namespaced: true,
     state: {
         username: "",
         token: "",

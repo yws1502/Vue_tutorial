@@ -39,7 +39,7 @@ export default {
             };
             axios.post(url, data, HEADERS)
             .then((res) => {
-                this.$store.commit("login", res.data)
+                this.$store.commit("userStore/login", res.data)
                 router.push("/")
             }).catch((err) => console.log(err))
         }

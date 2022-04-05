@@ -8,18 +8,23 @@
                 <li><router-link to="/student/1">학생</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/login">로그인</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/register">회원가입</router-link></li>
-                <li v-else><button @click="logOut" type="button">로그아웃</button></li>
+                <li v-else><span>{{username}}님 안녕하세요 </span><button @click="logOut" type="button">로그아웃</button></li>
             </ul>
         </nav>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     methods: {
         logOut() {
-            this.$store.commit("logOut");
+            this.$store.commit("userStore/logOut");
         }
+    },
+    computed: {
+        ...mapState("userStore", ["username"])
     }
 }
 </script>
