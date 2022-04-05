@@ -59,5 +59,8 @@ export const studentAPI = {
     },
     create: function(data) {
         return request("post", "/students", data)
+    },
+    delete: function(students) {
+        return request("delete", "/students", {students})
     }
 }

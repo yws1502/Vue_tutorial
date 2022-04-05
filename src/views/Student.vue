@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h2>학생 명단</h2>
-        <form>
+        <form @submit.prevent="deleteStudents">
             <table>
                 <thead>
                     <tr>
@@ -22,7 +22,7 @@
                         <td>{{student.subjectName}}</td>
                         <td>{{student.professorName}}</td>
                         <td><button type="button">수정 버튼</button></td>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" v-model="deleteList" :value="student.id"></td>
                     </tr>
                 </tbody>
             </table>
@@ -35,9 +35,15 @@
 
 <script>
 import { mapState } from "vuex";
+import { studentAPI } from '../api';
 import Modal from "../components/Modal.vue";
 
 export default {
+    data() {
+        return {
+            deleteList: []
+        }
+    },
     created() {
         this.getPage();
     },
@@ -47,6 +53,17 @@ export default {
         },
         getPage() {
             this.$store.dispatch("studentStore/getStudentPage", this.$route.params.id);
+        },
+        deleteStudents() {
+            if (this.deleteList.length === 0) return alert("삭제할 명단을 체크해주세요.");
+
+            if (confirm("삭제하시겠습니까?")) {
+                studentAPI.delete(this.deleteList)
+                .then(() => {
+                    this.getPage();
+                    this.deleteList = [];
+                });
+            }
         }
     },
     components: {
