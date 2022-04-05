@@ -19,13 +19,15 @@
                 </tr>
             </tbody>
         </table>
-        <button type="button">게시글 작성</button>
+        <button type="button" @click="showModal">게시글 작성</button>
+        <Modal :mode="'board'"></Modal>
     </div>
+
 </template>
 
 <script>
+import Modal from "../components/Modal.vue";
 import { boardAPI } from '../api'
-
 
 export default {
     data() {
@@ -48,8 +50,14 @@ export default {
         },
         getDate(date) {
             return date.split("T")[0]
-        }
+        },
+        showModal() {
+            this.$store.commit("setIsShow");
+        },
     },
+    components: {
+        Modal
+    }
 }
 </script>
 

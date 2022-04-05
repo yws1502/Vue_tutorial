@@ -3,6 +3,7 @@
         <StudentForm v-if="mode === 'student'"></StudentForm>
         <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
         <ProfessorForm v-else-if="mode === 'Professor'"></ProfessorForm>
+        <BoardForm v-else-if="mode === 'board'"></BoardForm>
     </div>
 </template>
 
@@ -10,6 +11,7 @@
 import StudentForm from "./form/StudentForm.vue";
 import SubjectForm from "./form/SubjectForm.vue";
 import ProfessorForm from "./form/ProfessorForm.vue";
+import BoardForm from "./form/BoardForm.vue";
 
 export default {
     methods: {
@@ -23,7 +25,8 @@ export default {
     components: {
         "StudentForm": StudentForm,
         "SubjectForm": SubjectForm,
-        "ProfessorForm": ProfessorForm
+        "ProfessorForm": ProfessorForm,
+        "BoardForm": BoardForm
     },
     props: ["mode"]
 }
