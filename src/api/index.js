@@ -57,4 +57,7 @@ export const studentAPI = {
     getStudents: function(routeId) {
         return request("get", `/students/${routeId}`)
     },
+    create: function(data) {
+        return request("post", "/students", data)
+    }
 }

@@ -1,22 +1,22 @@
 <template>
     <div class="container">
         <strong>학생 등록</strong>
-        <form @submit.prevent="registerStudentApi">
+        <form @submit.prevent="createStudentApi">
             <fieldset>
                 <label for="studentName">이름 : </label>
-                <input type="text" v-model="studentName" id="studentName">
+                <input type="text" v-model.trim="studentName" id="studentName">
             </fieldset>
             <fieldset>
                 <label for="studentAge">나이 : </label>
-                <input type="number" v-model="studentAge" id="studentAge">
+                <input type="number" v-model.trim="studentAge" id="studentAge">
             </fieldset>
             <fieldset>
                 <label for="studentAddress">주소 : </label>
-                <input type="text" v-model="studentAddress" id="studentAddress">
+                <input type="text" v-model.trim="studentAddress" id="studentAddress">
             </fieldset>
             <fieldset>
                 <label for="subjectInfo">전공 / 교수 : </label>
-                <select name="subject" id="subjectInfo" v-model="subjectInfo">
+                <select name="subject" id="subjectInfo" v-model.trim="subjectInfo">
                     <option v-for="(info, idx) in subjectInfoList" :key="idx" :value="info">{{info[0]}} / {{info[1]}}</option>
                 </select>
             </fieldset>
@@ -26,8 +26,7 @@
 </template>
 
 <script>
-import { ENDPOINT, HEADERS } from "../../constants/constants";
-import axios from "axios";
+import { subjectAPI, studentAPI } from '../../api';
 
 
 export default {
@@ -41,32 +40,36 @@ export default {
         }
     },
     created() {
-        axios.get(`${ENDPOINT}/subjects`)
-        .then((res) => {
-            res.data.forEach((subject) => {
-                subject.professors.forEach((professor) => {
+        subjectAPI.getAll()
+        .then(data => {
+            data.forEach(subject => {
+                subject.professors.forEach(professor => {
                     const temp = [subject.subjectName, professor.professorName];
                     this.subjectInfoList.push(temp);
                 });
             });
         })
-        .catch((err) => console.log(err))
     },
     methods: {
-        registerStudentApi() {
+        closeModal() {
+            this.$store.commit("setIsShow");
+        },
+        getPage() {
+            this.$store.dispatch("studentStore/getStudentPage", this.$route.params.id);
+        },
+        createStudentApi() {
             const data = {
-                studentName: this.studentName.trim(),
-                studentAge: parseInt(this.studentAge.trim()),
-                studentAddress: this.studentAddress.trim(),
-                subjectName: this.subjectInfo[0].trim(),
-                professorName: this.subjectInfo[1].trim(),
+                studentName: this.studentName,
+                studentAge: parseInt(this.studentAge),
+                studentAddress: this.studentAddress,
+                subjectName: this.subjectInfo[0],
+                professorName: this.subjectInfo[1],
             }
-            axios.post(`${ENDPOINT}/students`, data, HEADERS)
-            .then((res) => {
-                this.$store.commit("setIsShow");
-                alert("학생이 추가되었습니다.")
+            studentAPI.create(data)
+            .then(() => {
+                this.closeModal();
+                this.getPage();
             })
-            .catch((err) => console.log(err))
         },
     }
 }
