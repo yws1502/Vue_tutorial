@@ -4,7 +4,7 @@
             <router-link to="/">로고</router-link>
             <ul>
                 <li><router-link to="/subject/1">전공</router-link></li>
-                <li><router-link to="/professor">교수</router-link></li>
+                <li><router-link to="/professor/1">교수</router-link></li>
                 <li><router-link to="/student">학생</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/login">로그인</router-link></li>
                 <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/register">회원가입</router-link></li>

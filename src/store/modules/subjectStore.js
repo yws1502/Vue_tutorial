@@ -20,7 +20,7 @@ const subjectStore = {
     },
     actions: {
         fetchSubject(context, routeId) {
-            subjectAPI.fetchList(routeId)
+            subjectAPI.getSubjects(routeId)
                 .then(data => {
                     context.commit("setSubjects", data.data)
                 })

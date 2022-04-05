@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { ENDPOINT } from '../../constants/constants'
+import { professorAPI, subjectAPI } from "../../api";
+
+
 export default {
     data() {
         return {
@@ -34,13 +35,12 @@ export default {
         }
     },
     created() {
-        axios.get(`${ENDPOINT}/subjects`)
-        .then((res) => {
-            res.data.forEach((subjectInfo) => {
-                this.subjectList.push(subjectInfo.subjectName)
+        subjectAPI.getAll()
+            .then(data => {
+                data.forEach((subjectInfo) => {
+                    this.subjectList.push(subjectInfo.subjectName);
+                })
             })
-        })
-        .catch((err) => console.log(err))
     },
     methods: {
         registerProfessorApi() {
@@ -49,13 +49,12 @@ export default {
                 professorAge: parseInt(this.professorAge),
                 subjectName: this.subjectName
             }
-            axios.post(`${ENDPOINT}/professors`, data)
-            .then((res) => {
-                console.log(res)
-                alert("교수 등록이 완료되었습니다.")
-                this.$store.commit("setIsShow")
-            })
-            .catch((err) => console.log(err))
+            professorAPI.create(data)
+                .then(() => {
+                    alert("교수 등록이 완료되었습니다.");
+                    this.$store.dispatch("professorStore/fetchProfessors", this.$route.params.id)
+                    this.$store.commit("setIsShow");
+                })
         }
     }
 }

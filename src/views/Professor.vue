@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h2>교수 명단</h2>
-        <form>
+        <form @submit.prevent="deleteProfessor">
             <table>
                 <thead>
                     <tr>
@@ -18,7 +18,7 @@
                         <td>{{professor.professorAge}}</td>
                         <td>{{professor.subjectName}}</td>
                         <td><button type="button">수정</button></td>
-                        <td><input type="checkbox" :value="professor.id"></td>
+                        <td><input type="checkbox" v-model="deleteProfessorList" :value="professor.id"></td>
                     </tr>
                 </tbody>
             </table>
@@ -30,30 +30,34 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { ENDPOINT } from '../constants/constants'
+import { mapGetters } from "vuex";
 import Modal from "../components/Modal.vue"
 
 export default {
     data() {
         return {
+            deleteProfessorList: [],
             professors: [],
-        }
+        }   
     },
     created() {
-        axios.get(`${ENDPOINT}/professors/1`)
-        .then((res) => {
-            this.professors = res.data.data;
-        })
-        .catch((err) => console.log(err))
+        this.$store.dispatch("professorStore/fetchProfessors", this.$route.params.id)
+    },
+    watch: {
+        getProfessors(value) {
+            this.professors = value
+        },
     },
     methods: {
-        showModal: function() {
+        showModal() {
             this.$store.commit("setIsShow")
-        }
+        },
     },
     components: {
-        "Modal": Modal
+        Modal,
+    },
+    computed: {
+        ...mapGetters("professorStore", ["getProfessors"])
     }
 }
 </script>

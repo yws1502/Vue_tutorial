@@ -20,7 +20,10 @@ const request = (method, url, data) => {
 };
 
 export const subjectAPI = {
-    fetchList: function(routeId) {
+    getAll: function() {
+        return request("get", "/subjects")
+    },
+    getSubjects: function(routeId) {
         return request("get", `/subjects/${routeId}`)
     },
     create: function(data) {
@@ -34,3 +37,15 @@ export const subjectAPI = {
         return request("delete", "/subjects", {subjects})
     }
 };
+
+export const professorAPI = {
+    getProfessors: function(routeId) {
+        return request("get", `/professors/${routeId}`)
+    },
+    create: function(data) {
+        return request("post", "/professors", data)
+    },
+    delete: function(professors) {
+        return request("delete", "/professors", professors)
+    }
+}

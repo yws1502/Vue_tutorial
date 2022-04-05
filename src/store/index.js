@@ -8,15 +8,17 @@ Vue.use(Vuex);
 import userStore from "./modules/userStore";
 import modalStore  from "./modules/modalStore";
 import subjectStore from "./modules/subjectStore";
+import professorStore from "./modules/professorStore";
 
 const store = new Vuex.Store({
     modules: {
         userStore: userStore,
         modalStore: modalStore,
         subjectStore: subjectStore,
+        professorStore: professorStore,
     },
     plugins: [createPersistedState({
-        paths: ["userStore", "modalStore", "subjectStore"]
+        paths: ["userStore", "modalStore", "subjectStore", "professorStore"]
     })]
 });
 

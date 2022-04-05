@@ -24,7 +24,7 @@ export default new VueRouter({
             component: Subject
         },
         {
-            path: "/professor",
+            path: "/professor/:id",
             name: "professor",
             component: Professor
         },
