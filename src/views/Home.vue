@@ -11,11 +11,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr @click="clicked">
-                    <td>title</td>
-                    <td>content</td>
-                    <td>count</td>
-                    <td>created at</td>
+                <tr v-for="board in boards" :key="board.id" @click="clicked(board.boardId)">
+                    <td>{{ board.title }}</td>
+                    <td>{{ board.content }}</td>
+                    <td>{{ commentCount(board.comments) }}</td>
+                    <td>{{ getDate(board.createdAt) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -24,12 +24,32 @@
 </template>
 
 <script>
+import { boardAPI } from '../api'
+
+
 export default {
-    methods: {
-        clicked() {
-            console.log("clicked")
+    data() {
+        return {
+            boards: [],
         }
-    }
+    },
+    created() {
+        boardAPI.getBoards(this.$route.query.page)
+        .then(data => {
+            this.boards = data.data;
+        })
+    },
+    methods: {
+        clicked(id) {
+            console.log(id, this.boards)
+        },
+        commentCount(comment) {
+            return comment.length
+        },
+        getDate(date) {
+            return date.split("T")[0]
+        }
+    },
 }
 </script>
 
@@ -55,7 +75,8 @@ table td {
 }
 tbody tr:hover {
     cursor: pointer;
-    color: pink;
-    transition: .4s ease-out;
+    color: #fff;
+    background-color: pink;
+    transition: all .4s ease-out;
 }
 </style>

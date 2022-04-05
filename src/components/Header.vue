@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <nav>
-            <router-link to="/">로고</router-link>
+            <router-link to="/?page=1">로고</router-link>
             <ul>
                 <li><router-link to="/subject/1">전공</router-link></li>
                 <li><router-link to="/professor/1">교수</router-link></li>
