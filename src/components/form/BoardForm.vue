@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <strong>게시글 등록</strong>
-        <form>
+        <form @submit.prevent="createBoard">
             <fieldset>
                 <label for="boardTitle">제목 : </label>
-                <input type="text" id="boardTitle">
+                <input type="text" v-model="boardTitle" id="boardTitle">
             </fieldset>
             <fieldset>
                 <label for="studentAge">내용 : </label>
-                <textarea id="studentAge" cols="30" rows="10"></textarea>
+                <textarea id="studentAge" v-model="boardContent" cols="40" rows="10"></textarea>
             </fieldset>
             <button type="submit">등록 하기</button>
         </form>
@@ -16,9 +16,36 @@
 </template>
 
 <script>
+import { boardAPI } from '../../api';
 
 export default {
+    data() {
+        return {
+            boardTitle: "",
+            boardContent: "",
+        }
+    },
+    methods: {
+        getPage() {
+            this.$store.dispatch("boardStore/getBoardPage", this.$route.query.page);
+        },
+        closeModal() {
+            this.$store.commit("setIsShow");
+        },
+        createBoard() {
+            const data = {
+                "title": this.boardTitle,
+                "content": this.boardContent
+            };
+            boardAPI.create(data)
+            .then(() => {
+                this.getPage();
+                this.closeModal();
+            })
+        }
+    }
 }
+
 </script>
 
 <style scoped>

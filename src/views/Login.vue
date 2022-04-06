@@ -18,6 +18,7 @@
 
 <script>
 import { ENDPOINT, HEADERS } from "../constants/constants";
+import { setAuthInHeader } from "../api";
 import router from "../router/router";
 import axios from "axios";
 
@@ -39,8 +40,9 @@ export default {
             };
             axios.post(url, data, HEADERS)
             .then((res) => {
-                this.$store.commit("userStore/login", res.data)
-                router.push("/")
+                setAuthInHeader(res.data.token)
+                this.$store.commit("userStore/login", res.data);
+                router.push("/?page=1");
             }).catch((err) => console.log(err))
         }
     }

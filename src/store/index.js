@@ -10,6 +10,7 @@ import modalStore  from "./modules/modalStore";
 import subjectStore from "./modules/subjectStore";
 import professorStore from "./modules/professorStore";
 import studentStore from "./modules/studentStore";
+import boardStore from "./modules/boardStore";
 
 const store = new Vuex.Store({
     modules: {
@@ -17,10 +18,12 @@ const store = new Vuex.Store({
         modalStore,
         subjectStore,
         professorStore,
-        studentStore
+        studentStore,
+        boardStore
     },
     plugins: [createPersistedState({
-        paths: ["userStore", "modalStore", "subjectStore", "professorStore", "studentStore"]
+        paths: ["userStore", "modalStore", "subjectStore",
+        "professorStore", "studentStore", "boardStore"]
     })]
 });
 

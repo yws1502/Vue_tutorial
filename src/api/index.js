@@ -19,6 +19,11 @@ const request = (method, url, data) => {
     })
 };
 
+
+export const setAuthInHeader  = (token) => {
+    axios.defaults.headers.common["Authorization"] = token ? `Bearer ${ token }` : null;
+}
+
 export const subjectAPI = {
     getAll: function() {
         return request("get", "/subjects")
@@ -71,5 +76,8 @@ export const studentAPI = {
 export const boardAPI = {
     getBoards: function(routeId) {
         return request("get", `/boards/${routeId}`)
+    },
+    create: function(data) {
+        return request("post", "/boards", data)
     }
 }

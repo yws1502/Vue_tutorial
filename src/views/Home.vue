@@ -27,23 +27,21 @@
 
 <script>
 import Modal from "../components/Modal.vue";
-import { boardAPI } from '../api'
+import { mapState } from 'vuex';
 
 export default {
-    data() {
-        return {
-            boards: [],
-        }
-    },
     created() {
-        boardAPI.getBoards(this.$route.query.page)
-        .then(data => {
-            this.boards = data.data;
-        })
+        this.getPage();
     },
     methods: {
         clicked(id) {
             console.log(id, this.boards)
+        },
+        showModal() {
+            this.$store.commit("setIsShow");
+        },
+        getPage() {
+            this.$store.dispatch("boardStore/getBoardPage", this.$route.query.page);
         },
         commentCount(comment) {
             return comment.length
@@ -51,9 +49,9 @@ export default {
         getDate(date) {
             return date.split("T")[0]
         },
-        showModal() {
-            this.$store.commit("setIsShow");
-        },
+    },
+    computed: {
+        ...mapState("boardStore", ["boards"])
     },
     components: {
         Modal
