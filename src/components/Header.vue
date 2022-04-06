@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
     .container {
-        border: 1px solid rgba(0,0,0,0.5);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
     nav {
         display: flex;
