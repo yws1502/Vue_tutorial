@@ -6,6 +6,7 @@ import Professor from "../views/Professor.vue";
 import Student from "../views/Student.vue";
 import Subject from "../views/Subject.vue";
 import Home from "../views/Home.vue";
+import Board from "../views/Board.vue";
 
 
 Vue.use(VueRouter);
@@ -16,7 +17,12 @@ export default new VueRouter({
         {
             path: "/",
             name: "home",
-            component: Home
+            component: Home,
+        },
+        {
+            path: "/board/:id",
+            name: "board",
+            component: Board
         },
         {
             path: "/subject/:id",

@@ -11,7 +11,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="board in boards" :key="board.id" @click="clicked(board.boardId)">
+                <tr
+                    v-for="board in boards"
+                    :key="board.boardId"
+                    @click="routeBoard(board.boardId)"
+                >
                     <td>{{ board.title }}</td>
                     <td>{{ board.content }}</td>
                     <td>{{ commentCount(board.comments) }}</td>
@@ -20,43 +24,46 @@
             </tbody>
         </table>
         <button type="button" @click="showModal">게시글 작성</button>
+        <router-view></router-view>
         <Modal :mode="'board'"></Modal>
     </div>
-
 </template>
 
 <script>
 import Modal from "../components/Modal.vue";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
     created() {
         this.getPage();
     },
     methods: {
-        clicked(id) {
-            console.log(id, this.boards)
+        routeBoard(id) {
+            this.$router.push(`board/${id}`);
         },
         showModal() {
             this.$store.commit("setIsShow");
         },
         getPage() {
-            this.$store.dispatch("boardStore/getBoardPage", this.$route.query.page);
+            this.$store.dispatch(
+                "boardStore/getBoardPage",
+                this.$route.query.page
+            );
         },
         commentCount(comment) {
-            return comment.length
+            return comment.length;
         },
         getDate(date) {
-            return date.split("T")[0]
+            return date.split("T")[0];
         },
     },
     computed: {
-        ...mapState("boardStore", ["boards"])
+        ...mapState("boardStore", ["boards"]),
     },
     components: {
-        Modal
-    }
-}
+        Modal,
+    },
+};
 </script>
 
 <style scoped>
@@ -83,6 +90,6 @@ tbody tr:hover {
     cursor: pointer;
     color: #fff;
     background-color: pink;
-    transition: all .4s ease-out;
+    transition: all 0.4s ease-out;
 }
 </style>
