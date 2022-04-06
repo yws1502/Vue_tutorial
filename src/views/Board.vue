@@ -6,13 +6,11 @@
                 <h3>
                     <input
                         type="text"
-                        :class="{ 'input-active': isBoardUpdate }"
                         readonly
                         v-model="boardData.title"
                     />
                 </h3>
                 <textarea
-                    :class="{ 'input-active': isBoardUpdate }"
                     rows="10"
                     readonly
                     v-model="boardData.content"
@@ -26,22 +24,24 @@
         </section>
         <section class="comment-container">
             <h3>comments</h3>
-            <form>
+            <form @submit.prevent="createComments">
                 <ul>
                     <li>
+                        <input type="text" v-model="inputComment"><button type="submit">📝작성하기</button>
+                    </li>
+                    <li v-for="comment in comments" :key="comment.contentId">
                         <input
                             type="text"
-                            :class="{ 'input-active': isCommentUpdate }"
-                            class="input-active"
-                            v-model="comment"
+                            readonly
+                            :value="comment.content"
                         />
                         <div>
-                            <button type="button">수정</button>
-                            <button type="submit">삭제</button>
+                            👩🧑 {{comment.contentUsername}}
+                            <div class="comment-btn-wrapper" v-if="username === comment.contentUsername">
+                                <button type="button">수정</button>
+                                <button type="button" @click="deleteComment(comment.contentId)">삭제</button>
+                            </div>
                         </div>
-                    </li>
-                    <li>
-                        <input type="text" v-model="comment" />
                     </li>
                 </ul>
             </form>
@@ -51,19 +51,19 @@
 
 <script>
 import { mapState } from 'vuex';
-import { boardAPI, setAuthInHeader } from "../api";
+import { boardAPI, commentAPI, setAuthInHeader } from "../api";
 
 export default {
     data() {
         return {
             boardData: {},
-            comment: "comment",
-            isBoardUpdate: false,
-            isCommentUpdate: false,
+            comments: [],
+            inputComment: "",
         };
     },
     created() {
         this.getBoard();
+        this.getComments();
     },
     methods: {
         prevPage() {
@@ -72,34 +72,55 @@ export default {
         getBoard() {
             boardAPI.getBoard(this.$route.params.id)
             .then((data) => {
-                console.log(data)
                 this.boardData = data;
             });
         },
         deleteBoard() {
-            if (confirm("삭제하시겠습니까?")) {
+            if (confirm("게시물을 삭제하시겠습니까?")) {
                 setAuthInHeader(this.token);
                 boardAPI.delete(this.$route.params.id)
                 .then(() => {
                     this.prevPage();
                 })
             }
+        },
+        getComments() {
+            commentAPI.getComments(this.$route.params.id)
+            .then(data => {
+                this.comments = data
+            })
+        },
+        createComments() {
+            const data = {
+                "boardId": this.boardData.boardId,
+                "content": this.inputComment
+            };
+            console.log(data)
+            setAuthInHeader(this.token);
+            commentAPI.create(data)
+            .then(() => {
+                this.inputComment = "";
+                this.getComments();
+            })
+        },
+        deleteComment(commentId) {
+            if (confirm("댓글을 삭제하시겠습니까?")) {
+                setAuthInHeader(this.token);
+                commentAPI.delete(commentId)
+                .then(() => {
+                    this.getComments()
+                })
+            }
         }
     },
     computed: {
-        ...mapState("userStore", ["token"])
+        ...mapState("userStore", ["token", "username"]),
     }
 };
+
 </script>
 
 <style scoped>
-.board-container h3 .input-active,
-.board-container .input-active,
-.comment-container ul li .input-active {
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
 input,
 textarea {
     outline: none;
@@ -122,6 +143,7 @@ textarea {
     font-weight: 550;
     width: 100%;
     border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 6px;
 }
 .board-container textarea {
@@ -130,10 +152,14 @@ textarea {
     line-height: 16px;
     margin-bottom: 15px;
     border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 6px;
 }
 .comment-container {
+    height: 300px;
     text-align: left;
+    overflow-y: scroll;
+    padding: 5px;
 }
 .comment-container h3 {
     font-size: 23px;
@@ -144,15 +170,20 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 30px;
 }
-.comment-container ul li + li {
-    margin-top: 16px;
-}
-.comment-container ul li input {
+.comment-container li input {
     font-size: 14px;
     border: none;
-    flex: 1;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    flex: 4;
     padding: 7px;
     margin-right: 15px;
+}
+.comment-container li > div {
+    flex: 1;
+}
+.comment-btn-wrapper {
+    margin-top: 10px;
 }
 </style>

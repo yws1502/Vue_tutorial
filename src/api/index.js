@@ -88,3 +88,15 @@ export const boardAPI = {
         return request("delete", `/boards/${boardId}`)
     }
 }
+
+export const commentAPI = {
+    getComments: function(boardId) {
+        return request("get", `/comments/${boardId}`)
+    },
+    delete: function(commentId) {
+        return request("delete", `/comments/${commentId}`)
+    },
+    create: function(data) {
+        return request("post", "/comments", data)
+    }
+}
