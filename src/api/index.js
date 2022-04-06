@@ -16,6 +16,7 @@ const request = (method, url, data) => {
             alert("로그인 후 이용해주세요.");
             VueRouter.replace("login");
         }
+        throw err
     })
 };
 
@@ -74,10 +75,16 @@ export const studentAPI = {
 }
 
 export const boardAPI = {
+    getBoard: function(boardId) {
+        return request("get", `/board/${boardId}`)
+    },
     getBoards: function(routeId) {
         return request("get", `/boards/${routeId}`)
     },
     create: function(data) {
         return request("post", "/boards", data)
+    },
+    delete: function(boardId) {
+        return request("delete", `/boards/${boardId}`)
     }
 }

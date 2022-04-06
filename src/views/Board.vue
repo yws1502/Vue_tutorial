@@ -2,25 +2,25 @@
     <div class="container">
         <h2>게시글 상세</h2>
         <section class="board-container">
-            <form>
+            <form @submit.prevent="deleteBoard">
                 <h3>
                     <input
                         type="text"
                         :class="{ 'input-active': isBoardUpdate }"
                         readonly
-                        v-model="title"
+                        v-model="boardData.title"
                     />
                 </h3>
                 <textarea
                     :class="{ 'input-active': isBoardUpdate }"
                     rows="10"
                     readonly
-                    v-model="content"
+                    v-model="boardData.content"
                 />
                 <div>
                     <button type="button">수정</button>
                     <button type="submit">삭제</button>
-                    <button type="button">뒤로가기</button>
+                    <button @click="prevPage" type="button">뒤로가기</button>
                 </div>
             </form>
         </section>
@@ -50,16 +50,45 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { boardAPI, setAuthInHeader } from "../api";
+
 export default {
     data() {
         return {
-            title: `test ${this.$route.params.id}`,
-            content: "testcontent",
+            boardData: {},
             comment: "comment",
             isBoardUpdate: false,
             isCommentUpdate: false,
         };
     },
+    created() {
+        this.getBoard();
+    },
+    methods: {
+        prevPage() {
+            this.$router.back();
+        },
+        getBoard() {
+            boardAPI.getBoard(this.$route.params.id)
+            .then((data) => {
+                console.log(data)
+                this.boardData = data;
+            });
+        },
+        deleteBoard() {
+            if (confirm("삭제하시겠습니까?")) {
+                setAuthInHeader(this.token);
+                boardAPI.delete(this.$route.params.id)
+                .then(() => {
+                    this.prevPage();
+                })
+            }
+        }
+    },
+    computed: {
+        ...mapState("userStore", ["token"])
+    }
 };
 </script>
 
