@@ -6,7 +6,6 @@
                 <h3>
                     <input
                         type="text"
-                        readonly
                         v-model="boardData.title"
                     />
                 </h3>
@@ -27,16 +26,17 @@
             <form @submit.prevent="createComments">
                 <ul>
                     <li>
-                        <input type="text" v-model="inputComment"><button type="submit">📝작성하기</button>
+                        <input type="text" v-model="inputComment" placeholder="댓글을 작성하세요"><button type="submit">📝작성하기</button>
                     </li>
                     <li v-for="comment in comments" :key="comment.contentId">
                         <input
                             type="text"
-                            readonly
+                            :readonly="isCommentUpdate"
                             :value="comment.content"
+                            :ref="`comment-${comment.contentId}`"
                         />
                         <div>
-                            👩🧑 {{comment.contentUsername}}
+                            작성자 : {{comment.contentUsername}}
                             <div class="comment-btn-wrapper" v-if="username === comment.contentUsername">
                                 <button type="button">수정</button>
                                 <button type="button" @click="deleteComment(comment.contentId)">삭제</button>
@@ -59,6 +59,7 @@ export default {
             boardData: {},
             comments: [],
             inputComment: "",
+            isCommentUpdate: true
         };
     },
     created() {
@@ -95,12 +96,11 @@ export default {
                 "boardId": this.boardData.boardId,
                 "content": this.inputComment
             };
-            console.log(data)
             setAuthInHeader(this.token);
             commentAPI.create(data)
             .then(() => {
-                this.inputComment = "";
                 this.getComments();
+                this.inputComment = "";
             })
         },
         deleteComment(commentId) {
@@ -111,7 +111,7 @@ export default {
                     this.getComments()
                 })
             }
-        }
+        },
     },
     computed: {
         ...mapState("userStore", ["token", "username"]),
