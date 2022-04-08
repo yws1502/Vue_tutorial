@@ -3,12 +3,12 @@
         <nav>
             <router-link to="/?page=1">로고</router-link>
             <ul>
-                <li v-if="this.$store.state.userStore.isLogin"><span>{{username}}님 안녕하세요 </span></li>
+                <li v-if="isLogin"><span>{{username}}님 안녕하세요 </span></li>
                 <li><router-link to="/subject/1">전공</router-link></li>
                 <li><router-link to="/professor/1">교수</router-link></li>
                 <li><router-link to="/student/1">학생</router-link></li>
-                <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/login">로그인</router-link></li>
-                <li v-if="!this.$store.state.userStore.isLogin"><router-link to="/register">회원가입</router-link></li>
+                <li v-if="!isLogin"><router-link to="/login">로그인</router-link></li>
+                <li v-if="!isLogin"><router-link to="/register">회원가입</router-link></li>
                 <li v-else><button @click="logOut" type="button">로그아웃</button></li>
             </ul>
         </nav>
@@ -25,7 +25,7 @@ export default {
         }
     },
     computed: {
-        ...mapState("userStore", ["username"])
+        ...mapState("userStore", ["username", "isLogin"])
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <section>
         <h2>로그인</h2>
-        <form @submit="loginApi">
+        <form @submit.prevent="login">
             <fieldset>
                 <label for="userId">아이디 :</label>
                 <input type="text" id="userId" v-model="username" placeholder="아이디를 입력하세요">
@@ -17,10 +17,8 @@
 </template>
 
 <script>
-import { ENDPOINT, HEADERS } from "../constants/constants";
-import { setAuthInHeader } from "../api";
+import { loginAPI, setAuthInHeader } from "../api";
 import router from "../router/router";
-import axios from "axios";
 
 export default {
     data() {
@@ -30,21 +28,19 @@ export default {
         }
     },
     methods: {
-        loginApi(e) {
-            e.preventDefault();
-            const url = `${ENDPOINT}/users/login`;
+        login() {
             const data = {
                 "username": this.username,
                 "password": this.pwd,
                 "status": true
             };
-            axios.post(url, data, HEADERS)
-            .then((res) => {
-                setAuthInHeader(res.data.token)
-                this.$store.commit("userStore/login", res.data);
+            loginAPI.login(data)
+            .then(data => {
+                setAuthInHeader(data.token);
+                this.$store.commit("userStore/login", data);
                 router.push("/?page=1");
-            }).catch((err) => console.log(err))
-        }
+            })
+        },
     }
 }
 </script>

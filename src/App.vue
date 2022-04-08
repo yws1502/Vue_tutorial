@@ -11,11 +11,6 @@
 import Header from "./components/Header.vue"
 
 export default {
-  data() {
-    return {
-      test: "value"
-    }
-  },
   components: {
     "Header": Header
   }
