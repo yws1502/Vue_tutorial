@@ -41,6 +41,7 @@ export default {
         }
     },
     created() {
+        this.$store.commit("userStore/loginCheck");
         this.$store.dispatch("subjectStore/fetchSubject", this.$route.params.id);
     },
     methods: {

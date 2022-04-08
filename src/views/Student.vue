@@ -45,6 +45,7 @@ export default {
         }
     },
     created() {
+        this.$store.commit("userStore/loginCheck");
         this.getPage();
     },
     methods: {
