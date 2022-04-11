@@ -1,7 +1,7 @@
 <template>
     <section>
         <h2>회원가입</h2>
-        <form v-on:submit="signupApi">
+        <form @submit.prevent="signupApi">
             <fieldset>
                 <label for="username">아이디 :</label>
                 <input type="text" id="username" v-model="username" placeholder="아이디를 입력하세요">
@@ -23,9 +23,7 @@
 </template>
 
 <script>
-import { ENDPOINT } from "../constants/constants.js";
-import router from "../router/router"
-import axios from "axios";
+import { userAPI } from '../api/index.js';
 
 export default {
     data() {
@@ -38,26 +36,27 @@ export default {
         }
     },
     methods: {
-        validatePwd(e) {
+        validatePwd() {
             this.checkPwd = (this.pwd === this.pwdConfirm) ? false : true
             if (this.checkPwd === true) {
                 this.pwdConfirm = ""
             }
         },
-        signupApi(e) {
-            e.preventDefault();
-
-            axios.post(`${ENDPOINT}/users/signup`, {
+        signupApi() {
+            const data = {
                 username: this.username,
                 password: this.pwd
-            }).then((res) => {
-                console.log(res.data);
-                alert("회원가입 되었습니다.")
-                router.push("login")
-            }).catch((err) => {
-                console.log(err)
-                alert("회원가입에 실패하셨습니다..")
+            };
+
+            userAPI.signUp(data)
+            .then(() => {
+                alert("회원가입 되었습니다.");
+                this.$router.push("login");
             })
+            .catch(err => {
+                console.log(err);
+                alert("회원가입에 실패하셨습니다...");
+            });
         }
     }
 }

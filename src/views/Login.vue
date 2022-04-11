@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { loginAPI, setAuthInHeader } from "../api";
+import { userAPI, setAuthInHeader } from "../api";
 import router from "../router/router";
 
 export default {
@@ -34,13 +34,21 @@ export default {
                 "password": this.pwd,
                 "status": true
             };
-            loginAPI.login(data)
+            userAPI.login(data)
             .then(data => {
                 setAuthInHeader(data.token);
                 this.$store.commit("userStore/login", data);
                 router.push("/?page=1");
+            }).catch(err => {
+                alert("아이디 혹은 비밀번호를 확인해주세요.")
+                this.clearInput();
+                console.log(err)
             })
         },
+        clearInput() {
+            this.username = "";
+            this.pwd = "";
+        }
     }
 }
 </script>

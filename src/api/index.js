@@ -25,10 +25,13 @@ export const setAuthInHeader  = (token) => {
     axios.defaults.headers.common["Authorization"] = token ? `Bearer ${ token }` : null;
 }
 
-export const loginAPI = {
+export const userAPI = {
     login: function(data) {
-        return request("post", "/users/login", data)
+        return request("post", "/users/login", data);
     },
+    signUp(data) {
+        return request("post", "/users/signup", data);
+    }
 }
 
 export const subjectAPI = {
