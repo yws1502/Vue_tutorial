@@ -36,7 +36,7 @@ export default {
             subjectAPI.create(data)
                 .then(() => {
                     alert("전공이 등록되었습니다.");
-                    this.$store.commit("setIsShow");
+                    this.$store.commit("modalStore/setIsShow");
                     this.$router.go();
                     this.subjectName = "";
                 });
@@ -51,7 +51,7 @@ export default {
             subjectAPI.update(this.selectedSubject.id, data)
                 .then(() => {
                     alert("전공이 수정되었습니다.");
-                    this.$store.commit("setIsShow");
+                    this.$store.commit("modalStore/setIsShow");
                     this.$router.go();
                     this.$store.commit("subjectStore/clearSelectedSubject");
                 });

@@ -18,7 +18,7 @@
                             {{getProfessorOfSubject(subject)}}
                         </td>
                         <td><button type="button" @click="updateSubject(subject)">수정 버튼</button></td>
-                        <td><input type="checkbox" v-model="deleteList" :value="subject.id"></td>
+                        <td><input type="checkbox" v-model="checkedSubjects" :value="subject.id"></td>
                     </tr>
                 </tbody>
             </table>
@@ -37,7 +37,7 @@ import Modal from "../components/Modal.vue";
 export default {
     data() {
         return {
-            deleteList: [],
+            checkedSubjects: [],
         }
     },
     created() {
@@ -49,14 +49,15 @@ export default {
             return subject.professors[0] ? subject.professors[0].professorName : "-";
         },
         showModal() {
-            this.$store.commit("setIsShow")
+            this.$store.commit("modalStore/setFormMode", "SubjectForm")
+            this.$store.commit("modalStore/setIsShow")
         },
         deleteSubject() {
-            this.$store.dispatch("subjectStore/deleteSubject", this.deleteList);
-            this.deleteList = [];
+            this.$store.dispatch("subjectStore/deleteSubject", this.checkedSubjects);
+            this.checkedSubjects = [];
         },
         updateSubject(selectedSubject) {
-            this.$store.commit("setIsShow")
+            this.showModal();
             this.$store.commit("subjectStore/setSelectedSubject", selectedSubject);
         }
     },

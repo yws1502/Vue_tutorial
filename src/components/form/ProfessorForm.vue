@@ -4,15 +4,15 @@
         <form @submit.prevent="submitType">
             <fieldset>
                 <label for="professorName">이름</label>
-                <input type="text" id="professorName" v-model="professorName">
+                <input type="text" id="professorName" v-model.trim="professorName">
             </fieldset>
             <fieldset>
                 <label for="professorAge">나이</label>
-                <input type="number" id="professorAge" v-model="professorAge">
+                <input type="number" id="professorAge" v-model.trim="professorAge">
             </fieldset>
             <fieldset>
                 <label for="subjectValue">담당 과목</label>
-                <select name="subjectValue" id="subjectValue" v-model="subjectName">
+                <select name="subjectValue" id="subjectValue" v-model.trim="subjectName">
                     <option v-for="(subject, index) in subjectList" :key="index" :value="subject">{{subject}}</option>
                 </select>
             </fieldset>
@@ -33,7 +33,6 @@ export default {
             professorAge: "",
             subjectName: "",
             subjectList: [],
-            isUpdate: false
         }
     },
     created() {
@@ -55,7 +54,7 @@ export default {
             this.$store.dispatch("professorStore/getProfessors", this.$route.params.id)
         },
         closeModal() {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setIsShow");
         },
         setProfessorInfo() {
             const { professorName, professorAge, subjectName } = this.selectedProfessor;
@@ -73,7 +72,7 @@ export default {
                 .then(() => {
                     alert("교수 등록이 완료되었습니다.");
                     this.getPage();
-                    this.$store.commit("setIsShow");
+                    this.$store.commit("modalStore/setIsShow");
                 })
         },
         updateProfessorApi() {

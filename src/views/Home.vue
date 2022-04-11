@@ -14,7 +14,7 @@
                 <tr
                     v-for="board in boards"
                     :key="board.boardId"
-                    @click="routeBoard(board.boardId)"
+                    @click="goToBoard(board.boardId)"
                 >
                     <td>{{ board.title }}</td>
                     <td>{{ board.content }}</td>
@@ -24,7 +24,6 @@
             </tbody>
         </table>
         <button type="button" @click="showModal">게시글 작성</button>
-        <router-view></router-view>
         <Modal :mode="'board'"></Modal>
     </div>
 </template>
@@ -39,17 +38,18 @@ export default {
         this.getPage();
     },
     methods: {
-        routeBoard(id) {
-            this.$router.push(`board/${id}`);
-        },
         showModal() {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setFormMode", "BoardForm")
+            this.$store.commit("modalStore/setIsShow");
         },
         getPage() {
             this.$store.dispatch(
                 "boardStore/getBoardPage",
                 this.$route.query.page
             );
+        },
+        goToBoard(id) {
+            this.$router.push(`board/${id}`);
         },
         commentCount(comment) {
             return comment.length;

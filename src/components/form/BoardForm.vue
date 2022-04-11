@@ -39,7 +39,7 @@ export default {
             );
         },
         closeModal() {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setIsShow");
         },
         createBoard() {
             const data = {

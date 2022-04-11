@@ -1,9 +1,6 @@
 <template>
-    <div class="mask" @click.self="closeModal" v-if="this.$store.state.modalStore.isShow">
-        <StudentForm v-if="mode === 'student'"></StudentForm>
-        <SubjectForm v-else-if="mode === 'subject'"></SubjectForm>
-        <ProfessorForm v-else-if="mode === 'Professor'"></ProfessorForm>
-        <BoardForm v-else-if="mode === 'board'"></BoardForm>
+    <div class="mask" @click.self="closeModal" v-if="isShow">
+        <component :is="formMode"></component>
     </div>
 </template>
 
@@ -12,21 +9,25 @@ import StudentForm from "./form/StudentForm.vue";
 import SubjectForm from "./form/SubjectForm.vue";
 import ProfessorForm from "./form/ProfessorForm.vue";
 import BoardForm from "./form/BoardForm.vue";
+import { mapState } from "vuex";
 
 export default {
     methods: {
         closeModal(e) {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setIsShow");
             this.$store.commit("subjectStore/clearSelectedSubject");
             this.$store.commit("professorStore/clearSelectedProfessor");
             this.$store.commit("studentStore/clearSelectedStudent");
         }
     },
     components: {
-        "StudentForm": StudentForm,
-        "SubjectForm": SubjectForm,
-        "ProfessorForm": ProfessorForm,
-        "BoardForm": BoardForm
+        StudentForm,
+        SubjectForm,
+        ProfessorForm,
+        BoardForm,
+    },
+    computed: {
+        ...mapState("modalStore", ["isShow","formMode"])
     },
     props: ["mode"]
 }
