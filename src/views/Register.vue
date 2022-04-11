@@ -4,16 +4,16 @@
         <form @submit.prevent="signupApi">
             <fieldset>
                 <label for="username">아이디 :</label>
-                <input type="text" id="username" ref="usernameInput" v-model="username" placeholder="아이디를 입력하세요">
+                <input type="text" id="username" ref="usernameInput" v-model.trim="username" placeholder="아이디를 입력하세요">
                 <strong v-show="checkId">중복된 아이디입니다.</strong>
             </fieldset>
             <fieldset>
                 <label for="pwd">비밀번호 :</label>
-                <input type="password" id="pwd" v-model="pwd" placeholder="비밀번호를 입력하세요">
+                <input type="password" id="pwd" v-model.trim="pwd" placeholder="비밀번호를 입력하세요">
             </fieldset>
             <fieldset>
                 <label for="pwdConfirm">비밀번호 확인 :</label>
-                <input type="password" ref="pwdConfirmInput" id="pwdConfirm" v-model="pwdConfirm" v-on:change="validatePwd" placeholder="비밀번호를 입력하세요">
+                <input type="password" ref="pwdConfirmInput" id="pwdConfirm" v-model.trim="pwdConfirm" v-on:change="validatePwd" placeholder="비밀번호를 입력하세요">
                 <strong v-show="checkPwd">비밀번호가 일치하지 않습니다.</strong>
             </fieldset>
             <button type="submit">가입하기</button>

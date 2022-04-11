@@ -24,7 +24,7 @@
             </tbody>
         </table>
         <button type="button" @click="showModal">게시글 작성</button>
-        <Modal :mode="'board'"></Modal>
+        <Modal />
     </div>
 </template>
 

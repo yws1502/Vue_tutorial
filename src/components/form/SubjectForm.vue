@@ -4,7 +4,7 @@
         <form @submit.prevent="submitType">
             <fieldset>
                 <label for="subjectId">전공 : </label>
-                <input type="text" id="subjectId" v-model="subjectName">
+                <input type="text" id="subjectId" v-model.trim="subjectName">
             </fieldset>
             <button type="submit">등록하기</button>
         </form>
@@ -29,7 +29,7 @@ export default {
         }
     },
     methods: {
-        registerSubjectApi() {
+        createSubjectApi() {
             if (!this.subjectName) return alert("전공을 입력해주세요");
 
             const data = { "subjectName": this.subjectName };
@@ -63,7 +63,7 @@ export default {
     computed: {
         ...mapState("subjectStore", ["selectedSubject"]),
         submitType() {
-            return !this.selectedSubject ? this.registerSubjectApi : this.updateSubjectApi
+            return !this.selectedSubject ? this.createSubjectApi : this.updateSubjectApi
         }
     },
 }

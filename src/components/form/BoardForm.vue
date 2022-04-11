@@ -4,13 +4,13 @@
         <form @submit.prevent="createBoard">
             <fieldset>
                 <label for="boardTitle">제목 : </label>
-                <input type="text" v-model="boardTitle" id="boardTitle" />
+                <input type="text" v-model.trim="boardTitle" id="boardTitle" />
             </fieldset>
             <fieldset>
                 <label for="studentAge">내용 : </label>
                 <textarea
                     id="studentAge"
-                    v-model="boardContent"
+                    v-model.trim="boardContent"
                     cols="40"
                     rows="10"
                 ></textarea>

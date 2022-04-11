@@ -25,7 +25,7 @@
             <button type="button" @click="showModal">교수등록</button>
             <button type="submit">삭제하기</button>
         </form>
-        <Modal :mode="'Professor'"></Modal>
+        <Modal />
     </div>
 </template>
 

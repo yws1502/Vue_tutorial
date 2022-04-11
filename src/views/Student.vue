@@ -29,7 +29,7 @@
             <button type="button" @click="showModal">등록하기</button>
             <button type="submit">삭제하기</button>
         </form>
-        <Modal :mode="'student'"></Modal>
+        <Modal />
     </div>
 </template>
 
@@ -73,7 +73,7 @@ export default {
         }
     },
     components: {
-        "Modal": Modal
+        Modal
     },
     computed: {
         ...mapState("studentStore", ["students"])
