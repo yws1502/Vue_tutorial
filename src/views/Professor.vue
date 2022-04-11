@@ -18,7 +18,7 @@
                         <td>{{professor.professorAge}}</td>
                         <td>{{professor.subjectName}}</td>
                         <td><button type="button" @click="showUpdateModal(professor)">수정</button></td>
-                        <td><input type="checkbox" v-model="deleteProfessorList" :value="professor.id"></td>
+                        <td><input type="checkbox" v-model="checkedProfessors" :value="professor.id"></td>
                     </tr>
                 </tbody>
             </table>
@@ -37,7 +37,7 @@ import Modal from "../components/Modal.vue";
 export default {
     data() {
         return {
-            deleteProfessorList: [],
+            checkedProfessors: [],
         }   
     },
     created() {
@@ -46,19 +46,20 @@ export default {
     },
     methods: {
         showModal() {
-            this.$store.commit("setIsShow")
+            this.$store.commit("modalStore/setFormMode", "ProfessorForm")
+            this.$store.commit("modalStore/setIsShow")
         },
         getPage() {
             this.$store.dispatch("professorStore/getProfessors", this.$route.params.id)
         },
         deleteProfessor() {
-            if (this.deleteProfessorList.length === 0) return alert("삭제할 명단을 체크해주세요.");
+            if (this.checkedProfessors.length === 0) return alert("삭제할 명단을 체크해주세요.");
 
             if (confirm("삭제하시겠습니까?")) {
-                professorAPI.delete(this.deleteProfessorList)
+                professorAPI.delete(this.checkedProfessors)
                 .then(() => {
                     this.getPage();
-                    this.deleteProfessorList = [];
+                    this.checkedProfessors = [];
                 })
             }
         },

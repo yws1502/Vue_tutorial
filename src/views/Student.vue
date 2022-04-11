@@ -21,8 +21,8 @@
                         <td>{{student.studentAddress}}</td>
                         <td>{{student.subjectName}}</td>
                         <td>{{student.professorName}}</td>
-                        <td><button type="button" @click="updateModal(student)">수정 버튼</button></td>
-                        <td><input type="checkbox" v-model="deleteList" :value="student.id"></td>
+                        <td><button type="button" @click="showUpdateModal(student)">수정 버튼</button></td>
+                        <td><input type="checkbox" v-model="checkedStudents" :value="student.id"></td>
                     </tr>
                 </tbody>
             </table>
@@ -41,7 +41,7 @@ import Modal from "../components/Modal.vue";
 export default {
     data() {
         return {
-            deleteList: []
+            checkedStudents: []
         }
     },
     created() {
@@ -50,23 +50,24 @@ export default {
     },
     methods: {
         showModal() {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setFormMode", "StudentForm")
+            this.$store.commit("modalStore/setIsShow");
         },
         getPage() {
             this.$store.dispatch("studentStore/getStudentPage", this.$route.params.id);
         },
         deleteStudents() {
-            if (this.deleteList.length === 0) return alert("삭제할 명단을 체크해주세요.");
+            if (this.checkedStudents.length === 0) return alert("삭제할 명단을 체크해주세요.");
 
             if (confirm("삭제하시겠습니까?")) {
-                studentAPI.delete(this.deleteList)
+                studentAPI.delete(this.checkedStudents)
                 .then(() => {
                     this.getPage();
-                    this.deleteList = [];
+                    this.checkedStudents = [];
                 });
             }
         },
-        updateModal(selectedStudent) {
+        showUpdateModal(selectedStudent) {
             this.showModal();
             this.$store.commit("studentStore/setSelectedStudent", selectedStudent)
         }

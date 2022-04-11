@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         closeModal() {
-            this.$store.commit("setIsShow");
+            this.$store.commit("modalStore/setIsShow");
         },
         getPage() {
             this.$store.dispatch("studentStore/getStudentPage", this.$route.params.id);

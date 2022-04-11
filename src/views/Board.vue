@@ -80,7 +80,7 @@ export default {
             if (confirm("게시물을 삭제하시겠습니까?")) {
                 setAuthInHeader(this.token);
                 boardAPI.delete(this.$route.params.id)
-                .then(() => {
+                .then(() => {[]
                     this.prevPage();
                 })
             }
